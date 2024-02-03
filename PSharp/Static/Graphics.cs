@@ -1,8 +1,8 @@
 ﻿using System;
-using PSharp.Models;
+using System.Numerics;
 using Raylib_cs;
 
-namespace PSharp
+namespace PSharp.Static
 {
     public static class Graphics
     {
@@ -13,7 +13,7 @@ namespace PSharp
         private static PColor fillColor = Color.WHITE;
         private static PColor strokeColor = Color.BLACK;
 
-        public static void CreateCanvas(int width, int height)
+        public static void Size(int width, int height)
         {
             Raylib.InitWindow(width, height, "PSharp");
             RendererTexture = Raylib.LoadRenderTexture(width, height);
@@ -127,6 +127,8 @@ namespace PSharp
 
         #endregion Stroke
 
+        #region Figures
+
         public static void Ellipse(int x, int y, float width, float height)
         {
             DrawFigureInTexture(
@@ -151,6 +153,35 @@ namespace PSharp
             );
         }
 
+        #endregion Figures
+
+        #region Image
+
+
+        public static void Image(PImage image, int x, int y, int w, int h)
+        {
+            Raylib.BeginTextureMode(RendererTexture);
+            Rectangle sourceRec = new Rectangle(0, 0, image.Width, image.Height);
+            Rectangle destRec = new Rectangle(x, y, w, h);
+            Vector2 origin = new Vector2(0, 0);
+            Raylib.DrawTexturePro(
+                image.Texture,
+                sourceRec,
+                destRec,
+                origin,
+                0.0f,
+                Color.WHITE.ToRaylibColor()
+            );
+            Raylib.EndTextureMode();
+        }
+
+        public static void Image(PImage image, int x, int y)
+        {
+            Image(image, x, y, image.Width, image.Height);
+        }
+
+        #endregion Image
+
         private static void DrawFigureInTexture(Action fill, Action stroke)
         {
             Raylib.BeginTextureMode(RendererTexture);
@@ -169,32 +200,5 @@ namespace PSharp
         {
             Console.WriteLine(text.ToString());
         }
-
-        //private void SaveCanvas(string path = "output.png")
-        //{
-        //    // Saves the RenderTexture2D as an image to disk
-        //    Image image = Raylib.LoadImageFromTexture(RendererTexture.Texture);
-        //    Raylib.ExportImage(image, StringToSBytePtr(path));
-        //}
-
-        //public static sbyte* StringToSBytePtr(string str)
-        //{
-        //    // Convert the string to a byte array in UTF-8 encoding
-        //    byte[] bytes = Encoding.UTF8.GetBytes(str);
-
-        //    // Allocate unmanaged memory and get a pointer to it
-        //    IntPtr ptr = Marshal.AllocHGlobal(bytes.Length + 1);
-
-        //    // Copy byte array to unmanaged memory
-        //    Marshal.Copy(bytes, 0, ptr, bytes.Length);
-
-        //    // Set the last byte to 0 to null-terminate the string
-        //    Marshal.WriteByte(ptr + bytes.Length, 0);
-
-        //    // Cast IntPtr to sbyte* if necessary (in an unsafe context)
-        //    // sbyte* sbytePtr = (sbyte*)ptr;
-
-        //    return (sbyte*)ptr.ToPointer();
-        //}
     }
 }

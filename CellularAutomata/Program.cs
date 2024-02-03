@@ -1,7 +1,7 @@
 ﻿using CellularAutomata;
 using PSharp;
-using static PSharp.Graphics;
-using static PSharp.Math;
+using static PSharp.Static.Graphics;
+using static PSharp.Static.Math;
 
 const int ruleset = 22; // Change this to change the patttern
 const int cellSide = 1;
@@ -14,7 +14,7 @@ int generation = 0;
 
 void Setup()
 {
-    CreateCanvas(width, height);
+    Size(width, height);
     RandomSeed(0);
     NoStroke();
     Background(155);

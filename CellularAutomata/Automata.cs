@@ -1,4 +1,4 @@
-﻿using static PSharp.Graphics;
+﻿using static PSharp.Static.Graphics;
 
 namespace CellularAutomata
 {

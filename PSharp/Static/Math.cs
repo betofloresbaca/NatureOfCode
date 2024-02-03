@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Raylib_cs;
 
-namespace PSharp
+namespace PSharp.Static
 {
     public static class Math
     {

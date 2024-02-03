@@ -1,6 +1,4 @@
-﻿using PSharp.Models;
-
-namespace PSharp
+﻿namespace PSharp.Static
 {
     public static class Color
     {

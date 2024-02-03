@@ -15,4 +15,13 @@
     <ProjectReference Include="..\PSharp\PSharp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Images\BarrelRoll.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Run.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

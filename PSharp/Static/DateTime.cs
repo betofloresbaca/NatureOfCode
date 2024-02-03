@@ -1,4 +1,4 @@
-﻿namespace PSharp
+﻿namespace PSharp.Static
 {
     public static class DateTime
     {

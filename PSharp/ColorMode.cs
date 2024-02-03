@@ -1,4 +1,4 @@
-﻿namespace PSharp.Models
+﻿namespace PSharp
 {
     internal class ColorMode
     {

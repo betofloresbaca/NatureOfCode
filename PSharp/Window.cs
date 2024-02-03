@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using PSharp.Static;
 using Raylib_cs;
 
 namespace PSharp
@@ -22,7 +23,7 @@ namespace PSharp
             setup();
             if (!Raylib.IsWindowReady())
             {
-                Graphics.CreateCanvas(100, 100);
+                Graphics.Size(100, 100);
             }
             while (!Raylib.WindowShouldClose())
             {

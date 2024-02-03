@@ -1,7 +1,8 @@
 ﻿using System;
 using Raylib_cs;
+using static PSharp.Static.Color;
 
-namespace PSharp.Models
+namespace PSharp
 {
     public class PImage : IDisposable
     {
@@ -9,43 +10,41 @@ namespace PSharp.Models
         public int Height { get; internal set; }
 
         public PColor[] Pixels { get; internal set; }
-        private Texture2D Texture { get; init; }
+        internal Texture2D Texture { get; init; }
 
         public PImage(int width, int height)
         {
-            this.Width = width;
-            this.Height = height;
-            Raylib_cs.Image image = Raylib.GenImageColor(
-                width,
-                height,
-                Color.WHITE.ToRaylibColor()
-            );
-            this.Texture = Raylib.LoadTextureFromImage(image);
+            Width = width;
+            Height = height;
+            Image image = Raylib.GenImageColor(width, height, WHITE.ToRaylibColor());
+            Texture = Raylib.LoadTextureFromImage(image);
             Raylib.UnloadImage(image); // Is ti ok
         }
 
         internal PImage(string path)
         {
             this.Texture = Raylib.LoadTexture(path);
+            this.Width = Texture.Width;
+            this.Height = Texture.Height;
         }
 
         internal PImage(Texture2D texture)
         {
-            this.Texture = texture;
-            this.Width = texture.Width;
-            this.Height = texture.Height;
+            Texture = texture;
+            Width = texture.Width;
+            Height = texture.Height;
         }
 
         public void LoadPixels()
         {
-            Raylib_cs.Image image = Raylib.LoadImageFromTexture(this.Texture);
+            Image image = Raylib.LoadImageFromTexture(Texture);
             unsafe
             {
-                Raylib_cs.Color* colors = Raylib.LoadImageColors(image);
-                this.Pixels = new PColor[image.Width * image.Height];
+                Color* colors = Raylib.LoadImageColors(image);
+                Pixels = new PColor[image.Width * image.Height];
                 for (int i = 0; i < image.Width * image.Height; i++)
                 {
-                    this.Pixels[i] = new PColor(colors[i].R, colors[i].G, colors[i].B, colors[i].A);
+                    Pixels[i] = new PColor(colors[i].R, colors[i].G, colors[i].B, colors[i].A);
                 }
             }
             Raylib.UnloadImage(image);
@@ -53,12 +52,12 @@ namespace PSharp.Models
 
         public void UpdatePixels()
         {
-            Raylib.UpdateTexture(this.Texture, GetPixelsAsByteArray());
+            Raylib.UpdateTexture(Texture, GetPixelsAsByteArray());
         }
 
         public PImage Get(int x, int y, int w, int h)
         {
-            Raylib_cs.Image sourceImage = Raylib.LoadImageFromTexture(this.Texture);
+            Image sourceImage = Raylib.LoadImageFromTexture(Texture);
             Raylib.ImageCrop(ref sourceImage, new Rectangle(x, y, w, h));
             Texture2D croppedTexture = Raylib.LoadTextureFromImage(sourceImage);
             return new PImage(croppedTexture);
@@ -67,32 +66,38 @@ namespace PSharp.Models
         public void Set(int x, int y, PImage image)
         {
             Raylib.UpdateTextureRec(
-                this.Texture,
+                Texture,
                 new Rectangle(x, y, image.Width, image.Height),
                 image.GetPixelsAsByteArray()
             );
         }
 
+        public void Save(string path = "output.png")
+        {
+            Image image = Raylib.LoadImageFromTexture(this.Texture);
+            Raylib.ExportImage(image, path);
+        }
+
         private byte[] GetPixelsAsByteArray()
         {
-            if (this.Pixels is null)
+            if (Pixels is null)
             {
-                this.LoadPixels();
+                LoadPixels();
             }
-            byte[] bytes = new byte[this.Width * this.Height * 4];
-            for (int i = 0; i < this.Width * this.Height; i++)
+            byte[] bytes = new byte[Width * Height * 4];
+            for (int i = 0; i < Width * Height; i++)
             {
-                bytes[i * 4] = this.Pixels[i].R;
-                bytes[i * 4 + 1] = this.Pixels[i].G;
-                bytes[i * 4 + 2] = this.Pixels[i].B;
-                bytes[i * 4 + 3] = this.Pixels[i].A;
+                bytes[i * 4] = Pixels[i].R;
+                bytes[i * 4 + 1] = Pixels[i].G;
+                bytes[i * 4 + 2] = Pixels[i].B;
+                bytes[i * 4 + 3] = Pixels[i].A;
             }
             return bytes;
         }
 
         public void Dispose()
         {
-            Raylib.UnloadTexture(this.Texture);
+            Raylib.UnloadTexture(Texture);
         }
     }
 }
