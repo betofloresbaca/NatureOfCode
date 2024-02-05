@@ -64,13 +64,13 @@ namespace PSharp.Static
 
         public static double Ceil(double x) => System.Math.Ceiling(x);
 
-        public static double Max(double n0, double n1) => System.Math.Max(n0, n1);
+        public static T Max<T>(T n0, T n1) => Max(new T[] { n0, n1 });
 
-        public static double Max(double[] nums) => nums.Max();
+        public static T Max<T>(T[] nums) => nums.Max();
 
-        public static double Min(double n0, double n1) => System.Math.Min(n0, n1);
+        public static T Min<T>(T n0, T n1) => Min(new T[] { n0, n1 });
 
-        public static double Min(double[] nums) => nums.Min();
+        public static T Min<T>(T[] nums) => nums.Min();
 
         public static double Pow(double n, double e) => System.Math.Pow(n, e);
 
